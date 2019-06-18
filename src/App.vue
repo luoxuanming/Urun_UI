@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <router-view/> -->
-    <dropdown @change="aa" :dataList="dataList"></dropdown>
+    <dropdown handleEvent="click" @change="dropdown" :dataList="dataList"></dropdown>
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
     dropdown
   },
   methods:{
-    aa(){
+    dropdown(){
       console.log()
     }
   }

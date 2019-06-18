@@ -1,10 +1,18 @@
 <template>
-    <div class="zq-drop-list" @mouseover="onDplOver($event)" @mouseout="onDplOut($event)">
-        <span>{{dplLable}}<i></i></span>
-        <ul v-dpl ref="list">
-            <li v-for="(item, index) in dataList" :key="index" @click="onLiClick(index, $event)">{{item[labelProperty]}}</li>
-        </ul>
+  <div>
+    <div class="zq-drop-list" v-drop="handleClick" v-if="handleEvent=='click'">
+      <span @click="show = !show">{{dplLable}}<i></i></span>
+      <ul v-show="show">
+          <li v-for="(item, index) in dataList" :key="index" @click="onLiClick(index, $event)"><a href="javascript:void(0)">{{item[labelProperty]}}</a></li>
+      </ul>
     </div>
+    <div class="zq-drop-list" @mouseover="show=true;" @mouseout="show=false;" v-if="handleEvent=='hover'">
+      <span>{{dplLable}}<i></i></span>
+      <ul ref="list" v-show="show">
+          <li v-for="(item, index) in dataList" :key="index" @click="onLiClick(index, $event)">{{item[labelProperty]}}</li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -12,7 +20,8 @@ export default {
     name: "DropDownList",
     data(){
         return {
-            activeIndex:0
+            activeIndex:0,
+            show:false
         }
     },
     props:{
@@ -25,28 +34,43 @@ export default {
                 ]
             }
         },
+        handleEvent:{
+          type:String,
+          default(){ return "click" }
+        },
         labelProperty:{
             type:String,
             default(){ return "name" }
         }
     },
     directives:{
-        dpl:{
-            bind(el){
-                el.style.display = "none";
+        drop:{
+         bind:function(el,binding,vnode){
+                function documentHandler(e){
+                    if(el.contains(e.target)){//检测目标元素是否包含在el元素中 contains() 检测包含
+                        return false;  //跳出去，不执行下面的方法了
+                    }
+                    if(binding.expression){
+                        binding.value() //让某个元素执行handleClose这个方法
+                    }
+                }
+                el._vueClickOutside_ = documentHandler;
+                document.addEventListener('click',documentHandler);
+            },
+            unbind:function(el,binding){
+                document.removeEventListener('click',el._vueClickOutside_);
+                delete el._vueClickOutside_;
             }
         }
     },
     methods:{
-        onDplOver(event){
-            this.$refs.list.style.display = "block";
-        },
-        onDplOut(event){
-            this.$refs.list.style.display = "none";
+        handleClick(){
+          //下拉菜单
+          this.show = false;
         },
         onLiClick(index){
             let path = event.path || (event.composedPath && event.composedPath()) //兼容火狐和safari
-            path[1].style.display = "none";
+            this.handleClick();
             this.activeIndex = index;
             this.$emit("change", {
                 index:index,
@@ -68,6 +92,7 @@ export default {
         display: inline-block;
         min-width: 100px;
         position: relative;
+        cursor:pointer;
         span{
             display: block;
             height: 30px;
@@ -78,7 +103,6 @@ export default {
             color: #333333;
             border-radius: 4px;
             i{
-                background: url(https://www.easyicon.net/api/resizeApi.php?id=1189852&size=16) no-repeat center center;
                 margin-left: 6px;
                 display: inline-block;
             }
@@ -100,6 +124,10 @@ export default {
                 font-size: 14px;
                 border-bottom: solid 1px #f1f1f1;
                 background: #ffffff;
+                a{
+                  text-decoration:none;
+                  color:#333;
+                }
             }
             li:last-child{
                 border-bottom: none;
