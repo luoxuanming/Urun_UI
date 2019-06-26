@@ -1,20 +1,21 @@
 <template>
   <div id="app">
-    <!-- <router-view/> -->
+    <!--<router-view/>-->
     <dropdown handleEvent="click" @change="dropdown" :dataList="dataList"></dropdown>
+    <dropdown handleEvent="hover" @change="dropdown" :dataList="dataList"></dropdown>
   </div>
 </template>
 
 <script>
-import dropdown from "./base/dropdown/dropdown"
+import dropdown from "./base/dropdown-menu/dropdown-menu"
 export default {
   name: 'App',
   data(){
     return{
       dataList:[
-        {name: "选项一2"},
-        {name: "选项二1"}
-      ]
+        {name: "选项一A"},
+        {name: "选项二B"}
+      ],
     }
   },
   components:{

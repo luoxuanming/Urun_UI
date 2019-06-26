@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dropdown-menu">
     <div class="zq-drop-list" v-drop="handleClick" v-if="handleEvent=='click'">
       <span @click="show = !show">{{dplLable}}<i></i></span>
       <ul v-show="show">
@@ -46,7 +46,7 @@ export default {
     directives:{
         drop:{
          bind:function(el,binding,vnode){
-                function documentHandler(e){
+                function documentHandler(e){F
                     if(el.contains(e.target)){//检测目标元素是否包含在el元素中 contains() 检测包含
                         return false;  //跳出去，不执行下面的方法了
                     }
@@ -88,53 +88,57 @@ export default {
 
 
 <style scoped lang="less">
+  .dropdown-menu{
+    display:inline-block;
     .zq-drop-list{
-        display: inline-block;
-        min-width: 100px;
-        position: relative;
-        cursor:pointer;
-        span{
-            display: block;
-            height: 30px;
-            line-height: 30px;
-            background: #f1f1f1;
-            font-size: 14px;
-            text-align: center;
-            color: #333333;
-            border-radius: 4px;
-            i{
-                margin-left: 6px;
-                display: inline-block;
-            }
-        }
-        ul{
-            position: absolute;
-            top: 30px;
-            left: 0;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            border: solid 1px #f1f1f1;
-            border-radius: 4px;
-            overflow: hidden;
-            li{
-                list-style: none;
+            display: inline-block;
+            min-width: 100px;
+            position: relative;
+            cursor:pointer;
+            span{
+                display: block;
                 height: 30px;
                 line-height: 30px;
+                background: #f1f1f1;
                 font-size: 14px;
-                border-bottom: solid 1px #f1f1f1;
-                background: #ffffff;
-                a{
-                  text-decoration:none;
-                  color:#333;
+                text-align: center;
+                color: #333333;
+                border-radius: 4px;
+                i{
+                    margin-left: 6px;
+                    display: inline-block;
                 }
             }
-            li:last-child{
-                border-bottom: none;
-            }
-            li:hover{
-                background: #f6f6f6;
+            ul{
+                position: absolute;
+                top: 30px;
+                left: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                border: solid 1px #f1f1f1;
+                border-radius: 4px;
+                overflow: hidden;
+                li{
+                    list-style: none;
+                    height: 30px;
+                    line-height: 30px;
+                    font-size: 14px;
+                    border-bottom: solid 1px #f1f1f1;
+                    background: #ffffff;
+                    a{
+                      text-decoration:none;
+                      color:#333;
+                    }
+                }
+                li:last-child{
+                    border-bottom: none;
+                }
+                li:hover{
+                    background: #f6f6f6;
+                }
             }
         }
     }
+    
 </style>
