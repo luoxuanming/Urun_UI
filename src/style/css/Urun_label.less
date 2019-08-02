@@ -1,0 +1,201 @@
+@bright-color :#3598db; //亮色
+@ornament-color : #F4C700; //点缀色
+@border-weak-color: #d4e1e9; //弱色,线色
+@shadow-color:rgba(139,139,139,0.64);//阴影色
+
+//背景色
+@bg-color: #f0f4f7; //背景色
+@module-color:#ffffff; //模块色
+
+//字体色
+@f-bright-color :#3598db; //字体亮色
+@darken-color: #283e53; //标题色,加深色
+@default-color:#6c849c;//默认色
+@i-weak-color: #8fa1b5;//激活色,弱色,图标默认色
+@inverse-color:#989898;//反色
+
+//提示色
+@basic-color:#3598db;//基本色
+@negative-color:#ff4081;//负面色
+@success-color:#4caf50;//成功，正面
+@warn-color:#f4c700;//警告
+@msg-color:#2196f3;//消息，中立
+@error-color: #f44336; //出错颜色
+@disable-color:#e6e6e6;//禁用
+
+@box-shadow:0px 1px 3px @shadow-color;
+@border:1px solid @border-weak-color;
+
+.Urun-label {
+  display: inline-block;
+  vertical-align: middle;
+
+  a {
+    display: inline-block;
+    text-decoration: none;
+    margin-right: 14px;
+    vertical-align: middle;
+    &.normal {
+      background: #ffffff;
+      line-height: 22px;
+      font-size: 12px;
+      box-shadow: @box-shadow;
+      padding: 0 16px;
+      color: @default-color;
+      &.radius {
+        border-radius: 11px;
+      }
+
+      &:visited,
+      &:hover,
+      &:active {
+        color: #ffffff;
+        background: @basic-color;
+        text-decoration: none;
+        i {
+          color: #ffffff;
+        }
+      }
+      &.primary,
+      &.success,
+      &.warning,
+      &.error,
+      &.secondary {
+        color: #ffffff;
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+          color: #ffffff;
+        }
+        i {
+          color: #ffffff;
+        }
+      }
+      &.primary {
+        background: @basic-color;
+      }
+      &.success {
+        background: @success-color;
+      }
+      &.warning {
+        background: @warn-color;
+      }
+      &.error {
+        background: @error-color;
+      }
+      &.secondary {
+        background: @negative-color;
+      }
+      &.disable {
+        background: @disable-color;
+        color: #a1a1a1;
+      }
+      i {
+        font-size: 10px;
+        margin-left: 6px;
+        float: right;
+        color: @default-color;
+      }
+    }
+    &.small {
+      line-height: 18px;
+      font-size: 12px;
+      border: 1px solid @default-color;
+      color: @default-color;
+      padding: 0 8px;
+      background: transparent;
+      &.radius {
+        border-radius: 9px;
+      }
+      &.primary {
+        border-color: @basic-color;
+        color: @basic-color;
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+          color: @basic-color;
+        }
+      }
+      &.success {
+        border-color: @success-color;
+        color: @success-color;
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+          color: @success-color;
+        }
+      }
+      &.warning {
+        border-color: @warn-color;
+        color: @warn-color;
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+          color: @warn-color;
+        }
+      }
+      &.error {
+        border-color: @error-color;
+        color: @error-color;
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+          color: @error-color;
+        }
+      }
+      &.secondary {
+        border-color: @negative-color;
+        color: @negative-color;
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+          color: @negative-color;
+        }
+      }
+      &.disable {
+        border-color: @disable-color;
+        color: #a1a1a1;
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+          color: #a1a1a1;
+        }
+      }
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  .iconplus {
+    display: inline-block;
+    font-size: 18px;
+    color: @basic-color;
+    vertical-align: middle;
+    cursor: pointer;
+    &.primary {
+      color: @basic-color;
+    }
+    &.success {
+      color: @success-color;
+    }
+    &.secondary {
+      color: @negative-color;
+    }
+    &.warning {
+      color: @warn-color;
+    }
+    &.info {
+      color: @msg-color;
+    }
+    &.error {
+      color: @error-color;
+    }
+  }
+}

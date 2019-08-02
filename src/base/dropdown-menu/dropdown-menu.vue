@@ -1,43 +1,54 @@
 <template>
-  <div class="Urun-dropdown-menu" :class="size == 'sm' ? 'sm' : ''">
-    <div
-      class="zq-drop-list"
-      v-drop="handleClick"
-      v-if="handleEvent == 'click'"
-    >
-      <span @click="show = !show"
-        >{{ dplLable
-        }}<i class="iconfont iconxialajiantou" :style="iconStyle"></i
-      ></span>
-      <ul v-show="show">
-        <li
-          v-for="(item, index) in dataList"
-          :key="index"
-          @click="onLiClick(index, $event)"
-        >
-          <a href="javascript:void(0)">{{ item[labelProperty] }}</a>
-        </li>
-      </ul>
-    </div>
-    <div
-      class="zq-drop-list"
-      @mouseenter="show = true"
-      @mouseleave="show = false"
-      v-if="handleEvent == 'hover'"
-    >
-      <span
-        >{{ dplLable
-        }}<i class="iconfont iconxialajiantou" :style="iconStyle"></i
-      ></span>
-      <ul ref="list" v-show="show">
-        <li
-          v-for="(item, index) in dataList"
-          :key="index"
-          @click="onLiClick(index, $event)"
-        >
-          {{ item[labelProperty] }}
-        </li>
-      </ul>
+  <div class="Urun-toolbar-formlist" v-cloak>
+    <div class="list" v-for="(item,index) in list">
+      <div class="drop-wrapper" v-if="item.type=='drop'">
+        <span v-if="item.title" class="title" :class="size == 'sm' ? 'small' : ''" v-html="item.title+'：'"></span>
+        <div class="Urun-dropdown-menu" :class="size == 'sm' ? 'sm' : ''">
+          <div
+            class="zq-drop-list"
+            v-drop="handleClick"
+            v-if="handleEvent == 'click'"
+          >
+            <span @click="item.show = !item.show"
+              >{{ item.select?item.select:'请选择'
+              }}<i class="iconfont iconxialajiantou" :style="iconStyle"></i
+            ></span>
+            <ul v-show="item.show">
+              <li
+                v-for="(list, list_index) in item.dataList"
+                :key="list_index"
+                @click="onLiClick(index,list_index, $event)"
+              >
+                <a :href="item.link?item.link:'javascript:;'">{{ list[item.labelProperty] }}</a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="zq-drop-list"
+            @mouseenter="item.show = true"
+            @mouseleave="item.show = false"
+            v-if="handleEvent == 'hover'"
+          >
+            <span
+              >{{  item.select?item.select:'请选择'
+              }}<i class="iconfont iconxialajiantou" :style="iconStyle"></i
+            ></span>
+            <ul ref="list" v-show="item.show" v-if="item.dataList.length>0">
+              <li
+                v-for="(list, list_index) in item.dataList"
+                :key="list_index"
+               @click="onLiClick(index,list_index, $event)"
+              >
+                <a :href="item.link?item.link:'javascript:;'">{{ list[item.labelProperty] }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="input-wrapper" v-if="item.type=='text'">
+        <span v-if="item.title" class="title" :class="size == 'sm' ? 'small' : ''" v-html="item.title+'：'"></span>
+        <form class="form" :class="size == 'sm' ? 'small' : ''"><input type="text" :placeholder="item.placeholder?item.placeholder:'请输入'+item.title"></form>
+      </div>
     </div>
   </div>
 </template>
@@ -47,8 +58,23 @@ export default {
   name: "DropDownList",
   data() {
     return {
-      activeIndex: 0,
-      show: false
+      list:[
+        {
+          type:'drop',
+          title:"用户名",
+          dataList:[{name: "选项一A"},{name: "选项二B2"}],
+          handleEvent:'click',
+          labelProperty:'name',
+          link:null,
+          select:"",
+          show:false
+        },
+        {
+          type:'text',
+          title:"用户名",
+          placeholder:null
+        }
+      ]
     };
   },
   props: {
@@ -61,7 +87,7 @@ export default {
     handleEvent: {
       type: String,
       default() {
-        return "click";
+        return "hover";
       }
     },
     labelProperty: {
@@ -99,23 +125,25 @@ export default {
     }
   },
   methods: {
-    handleClick() {
+    handleClick(index1,index) {
       //下拉菜单
-      this.show = false;
+     this.list.forEach((item)=>{
+        item.show=false;
+     });
+     if(index1!=null&&index!=null){
+      var labelProperty= this.list[index1].labelProperty;
+      this.list[index1].select=this.list[index1].dataList[index][labelProperty];
+     }
+      
     },
-    onLiClick(index) {
+    onLiClick(index1,index) {
       let path = event.path || (event.composedPath && event.composedPath()); //兼容火狐和safari
-      this.handleClick();
-      this.activeIndex = index;
-      this.$emit("change", {
-        index: index,
-        value: this.dataList[index]
-      });
+      this.handleClick(index1,index);
     }
   },
   computed: {
     dplLable() {
-      return this.dataList[this.activeIndex][this.labelProperty];
+      return this.list[this.labelProperty];
     },
     iconStyle() {
       return this.show ? "color:#3598db" : "";
@@ -127,109 +155,147 @@ export default {
 
 <style scoped lang="less">
 @import "../../style/css/base.less";
-.Urun-dropdown-menu {
+.Urun-toolbar-formlist {
   display: inline-block;
-  .zq-drop-list {
+  .list {
     display: inline-block;
-    min-width: 100px;
-    position: relative;
-    cursor: pointer;
-    span {
-      display: block;
-      height: 28px;
-      line-height: 28px;
-      background: @module-color;
-      border-radius: 15px;
+    vertical-align: middle;
+    margin-right: 20px;
+    .title{
       font-size: 14px;
-      text-align: center;
-      color: #333333;
-      box-shadow: @box-shadow;
-      color: @default-color;
-      padding: 0 12px;
-      i {
-        margin-left: 6px;
+      color: @i-weak-color;
+      vertical-align: middle;
+      &.small{font-size: 12px;}
+    }
+    .Urun-dropdown-menu {
+      display: inline-block;
+      vertical-align: middle;
+      .zq-drop-list {
         display: inline-block;
-        font-size: 6px;
-        float: right;
-        margin-top: 1px;
-      }
-      &:hover {
-        i {
-          color: @f-bright-color;
-        }
-      }
-    }
-    ul {
-      position: absolute;
-      top: 40px;
-      left: 0;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      box-shadow: @box-shadow;
-      border-radius: 4px;
-      li {
-        list-style: none;
-        height: 28px;
-        line-height: 28px;
-        font-size: 14px;
-        background: #ffffff;
-        overflow: hidden;
-        color: @default-color;
-        a {
-          text-decoration: none;
+        position: relative;
+        cursor: pointer;
+        span {
+          display: block;
+          height: 28px;
+          line-height: 28px;
+          background: @module-color;
+          border-radius: 15px;
+          font-size: 14px;
+          text-align: center;
+          color: #333333;
+          box-shadow: @box-shadow;
           color: @default-color;
+          padding: 0 12px;
+          padding-right: 9px;
+          i {
+            margin-left: 6px;
+            display: inline-block;
+            font-size: 6px;
+            float: right;
+            margin-top: 1px;
+          }
+          &:hover {
+            i {
+              color: @f-bright-color;
+            }
+          }
+        }
+        ul {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          border-radius: 4px;
+          z-index: 20;
+          padding-top: 13px;
+          li {
+            list-style: none;
+            height: 28px;
+            line-height: 28px;
+            font-size: 14px;
+            background: #ffffff;
+            overflow: hidden;
+            color: @default-color;
+            box-shadow: @box-shadow;
+            a {
+              text-decoration: none;
+              color: @default-color;
+            }
+          }
+          li:first-child {
+            border-radius: 4px 4px 0 0;
+          }
+          li:last-child {
+            border-bottom: none;
+            border-radius: 0 0 4px 4px;
+          }
+          li:hover {
+            background: @border-weak-color;
+          }
+          &::before {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            content: "";
+            width: 0;
+            height: 0;
+            border-width: 6px;
+            border-style: solid;
+            top: 0px;
+            border-color: transparent transparent @border-weak-color transparent;
+          }
+          &::after {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            content: "";
+            width: 0;
+            height: 0;
+            border-width: 6px;
+            border-style: solid;
+            top: 1px;
+            border-color: transparent transparent #fff transparent;
+          }
         }
       }
-      li:first-child {
-        border-radius: 4px 4px 0 0;
-      }
-      li:last-child {
-        border-bottom: none;
-        border-radius: 0 0 4px 4px;
-      }
-      li:hover {
-        background: @border-weak-color;
-      }
-      &::before {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        content: "";
-        width: 0;
-        height: 0;
-        border-width: 6px;
-        border-style: solid;
-        top: -13px;
-        border-color: transparent transparent @border-weak-color transparent;
-      }
-      &::after {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        content: "";
-        width: 0;
-        height: 0;
-        border-width: 6px;
-        border-style: solid;
-        top: -12px;
-        border-color: transparent transparent #fff transparent;
+      &.sm {
+        .zq-drop-list {
+          span {
+            height: 22px;
+            line-height: 22px;
+            font-size: 12px;
+          }
+          ul {
+            top: 100%;
+            li {
+              height: 22px;
+              line-height: 22px;
+              font-size: 12px;
+            }
+          }
+        }
       }
     }
-  }
-  &.sm {
-    .zq-drop-list {
-      span {
-        height: 22px;
-        line-height: 22px;
-        font-size: 12px;
+    .form{
+      display: inline-block;
+      border-bottom:1px solid @border-weak-color;
+      input{
+        border: none;
+        outline: none;
+        color: @darken-color;
+        font-size: 14px;
+        margin: 6px 0;
+        &::placeholder{
+          color: @i-weak-color;
+        }
       }
-      ul {
-        top: 32px;
-        li {
-          height: 22px;
-          line-height: 22px;
+      &.small{
+        input{
           font-size: 12px;
+          margin:0;
+          margin-bottom: 3px;
         }
       }
     }

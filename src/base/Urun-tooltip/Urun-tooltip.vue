@@ -1,8 +1,9 @@
 <template>
-  <div ref="tooltip" class="Urun-tooltip" @click="HandleClick">
-    {{ text }}
-    <span ref="tip" v-show="show" class="tip" :class="align">
-      {{ tip }}
+  <div ref="tooltip" class="Urun-tooltip" @click="handleClick" @mouseenter="monserOver" @mouseleave="mouseOut" v-tip="tiphide">
+    <span v-if="text" class="text" :style="txtWidth">{{ text }}</span>
+    <i v-if="icon" class="iconfont" :class="icon"></i>
+    <span ref="tip" v-show="show" class="tip" :class="align" :style="tipWidth">
+      {{ tip.text }}
     </span>
   </div>
 </template>
@@ -11,101 +12,147 @@
 export default {
   data() {
     return {
-      show: true,
+      show: false,
+      align: "right",
+      handleEvent:'hover',
       text: "这是内容",
-      tip: "声音文件创建成功",
-      align: "top",
-      oldalign:"right"
-    };
+      width:200,
+      tip:{
+        respond:true,
+        text: "声音文件创建成功",
+        width:120,
+        position: "right"
+      },
+      icon:"",
+    }
+  },
+  computed:{
+    txtWidth(){
+      return this.width?'max-width:'+this.width+'px':'max-width:auto;';
+    },
+    tipWidth(){
+      return this.tip.width?'width:'+this.tip.width+'px':'white-space: nowrap;';
+    }
+  },
+  directives: {
+    tip:{
+      bind: function(el, binding, vnode) {
+        function documentHandler(e) {
+          if (el.contains(e.target)) {
+            //检测目标元素是否包含在el元素中 contains() 检测包含
+            return false; //跳出去，不执行下面的方法了
+          }
+          if (binding.expression) {
+            binding.value(); //让某个元素执行handleClose这个方法
+          }
+        }
+        document.addEventListener("click", documentHandler);
+      }
+      
+    }
   },
   methods: {
     resize() {
-      var _this = this;
+     var _this = this;
       window.onresize = function() {
-        var window_width = document.documentElement.clientWidth;
-        var window_height = document.documentElement.clientHeight;
-        var tooltip_width = _this.$refs.tooltip.clientWidth;
-        var tooltip_height = _this.$refs.tooltip.clientHeight;
-        var tip_width = _this.$refs.tip.clientWidth;
-        var tip_height = _this.$refs.tip.clientHeight;
-
-       var to_left;
-        if(_this.align == 'bottom' || _this.align == 'top' ){
-          to_left = _this.$refs.tooltip.offsetLeft - Math.abs((tooltip_width - tip_width) / 2);
-        }else{
-          if(_this.align == 'right'){
-            to_left = _this.$refs.tooltip.offsetLeft +tooltip_width;
-          }else{
-            to_left = _this.$refs.tooltip.offsetLeft - tip_width -12;
-          }
+        if(_this.tip.respond){
+          _this.tipPosition();
         }
-        
-        
-        var to_right;
-        if(_this.align == 'right'){
-            to_right = window_width - to_left - tip_width - 16;
-        }else{
-            to_right = window_width - _this.$refs.tooltip.offsetLeft -tooltip_width;
-          if(_this.align=='top' || _this.align=='bottom'){
-            to_right = window_width - to_left - tip_width;
-          }
-        }
-
-        var to_top;
-        if(_this.align == 'bottom'){
-          to_top=_this.$refs.tooltip.offsetTop + tooltip_height
-        }else if(_this.align == 'left' && _this.align == 'right'){
-          to_top=_this.$refs.tooltip.offsetTop - (tip_height-tooltip_height)/2;
-        }else{
-          to_top=_this.$refs.tooltip.offsetTop - tip_height - 12;
-        }
-
-        var to_bottom = window_height - to_top - tip_height;
-
-        
-        var dis = 30; //距离边界距离
-        console.log(to_right)
-        // if (
-        //   to_top >= dis &&
-        //   to_right >= dis &&
-        //   to_bottom >= dis &&
-        //   to_left >= dis
-        // ) {
-        //   //默认 传进来的是什么就是什么
-        //   if(_this.oldalign=='left' && to_left +dis >=tooltip_width ){
-        //     _this.align = 'left'
-        //   }
-        //   if(_this.oldalign=='right' && to_right +dis >=tooltip_width){
-        //     _this.align = 'right'
-        //   }
-        //   if(_this.oldalign=='top' && to_top +dis >=tooltip_height){
-        //     _this.align = 'top'
-        //   }
-        //   if(_this.oldalign=='bottom' && to_bottom +dis >=tooltip_height){
-        //     _this.align = 'bottom'
-        //   }
-        // } else {
-        //   //这里肯定有一边小于 dis了，这时需要判断那边的距离宽就往哪边走，优先反方向
-
-        //   if(to_top>dis && to_top>to_right && to_top>to_bottom && to_top>to_left){
-        //     _this.align = 'top';
-        //   }
-        //   if(to_right>dis && to_right>to_top && to_right>to_bottom && to_right>to_left){
-        //     _this.align = 'right';
-        //   }
-        //   if(to_bottom>dis && to_bottom>to_top && to_bottom>to_right && to_bottom>to_left){
-        //     _this.align = 'bottom';
-        //   }
-        //   if(to_left>dis && to_left>to_top && to_left>to_right && to_left>to_bottom){
-        //     _this.align = 'left';
-        //   }
-        // }
       };
     },
-    HandleClick() {}
+    tipPosition(){
+        var window_width = document.documentElement.clientWidth;
+        var window_height = document.documentElement.clientHeight;
+        var tooltip_width = this.$refs.tooltip.clientWidth; 
+        var tooltip_height = this.$refs.tooltip.clientHeight;
+        var tooltip_left = this.$refs.tooltip.offsetLeft; //内容离左边的距离
+        var tooltip_top = this.$refs.tooltip.offsetTop;
+        var tooltip_right = window_width-tooltip_left-tooltip_width;
+        var tooltip_bottom = window_height - tooltip_top - tooltip_height;
+        var tip_width = this.$refs.tip.clientWidth; //提示框宽度
+        var tip_height = this.$refs.tip.clientHeight; //提示框高度度
+        
+        var to_top;
+        var to_left;
+        var to_right;
+        var to_bottom;
+
+        if (tooltip_top >= tip_height+13 &&tooltip_right >= tip_width && tooltip_bottom >= tip_height+13 &&tooltip_left >= tip_width) {
+          //默认 传进来的是什么就是什么
+          if(this.tip.position=='right' && tooltip_right>tip_width){
+            this.align = 'right'
+          }
+          if(this.tip.position=='left' && tooltip_left>tip_width){
+            this.align = 'left'
+          }
+          if(this.tip.position=='top' && tooltip_top>tip_height){
+            this.align = 'top'
+          }
+          if(this.tip.position=='bottom' && tooltip_bottom>tip_height){
+            this.align = 'bottom'
+          }
+        } else {
+          /*取最长距离的方向房子tip容器*/  
+          if(tooltip_top>tooltip_right && tooltip_top>tooltip_bottom && tooltip_top>tooltip_left){
+            this.align = 'top';
+          }
+          if(tooltip_right>tooltip_top && tooltip_right>tooltip_bottom && tooltip_right>tooltip_left){
+            this.align = 'right';
+          }
+          if(tooltip_bottom>tooltip_top && tooltip_bottom>tooltip_right && tooltip_bottom>tooltip_left){
+            this.align = 'bottom';
+          }
+          if(tooltip_left>tooltip_top && tooltip_left>tooltip_right && tooltip_left>tooltip_bottom){
+            this.align = 'left';
+          }
+
+          /*当传进来的数值方向有足够的位置，默认还是为传进来的位置-》二层限制*/  
+          if(this.tip.position=='top' && tooltip_top>tip_height+5){
+            this.align = 'top';
+          }
+          if(this.tip.position=='right' && tooltip_right>tip_width+5){
+            this.align = 'right';
+          }
+          if(this.tip.position=='bottom' && tooltip_bottom>tip_height+5){
+            this.align = 'bottom';
+          }
+          if(this.tip.position=='left' && tooltip_left>tip_width+5){
+            this.align = 'left';
+          }
+        }
+       
+    },
+    handleClick(el) {
+      if(this.handleEvent=='click'){
+        this.show=!this.show;
+        this.$nextTick(function(){
+          this.tipPosition();
+        })
+      }
+    },
+    monserOver(){
+     if(this.handleEvent=='hover'){
+      this.show=true;
+      this.$nextTick(function(){
+        this.tipPosition();
+      })
+     } 
+    },
+    mouseOut(){
+      if(this.handleEvent=='hover'){
+        this.show=false;
+      }
+    },
+    tiphide(){
+      this.show=false;
+    }
   },
   mounted() {
-    this.resize();
+    if(this.tip.respond){
+      this.resize();
+      this.tipPosition();
+    }
+   
   }
 };
 </script>
@@ -116,14 +163,23 @@ export default {
   display: inline-block;
   font-size: 14px;
   color: @default-color;
-  border: 1px solid @border-weak-color;
+  padding: 8px;
+  .text{
+    display: inline-block;
+    vertical-align: middle;
+  }
+  i{
+    vertical-align: middle;
+    font-size: 18px;
+  }
   .tip {
     position: absolute;
-    white-space: nowrap;
     box-shadow: @box-shadow;
     background: @module-color;
     border-radius: 2px;
     padding: 10px;
+    text-align: left;
+    z-index: 999;
     &::before {
       position: absolute;
       content: "";
@@ -135,7 +191,7 @@ export default {
       border-style: solid;
     }
     &.bottom {
-      bottom: -13px;
+      bottom: -5px;
       left: 50%;
       transform: translate(-50%, 100%);
       &::before {
@@ -156,7 +212,7 @@ export default {
     }
 
     &.top {
-      top: -13px;
+      top: -5px;
       left: 50%;
       transform: translate(-50%, -100%);
       &::before {
@@ -177,7 +233,7 @@ export default {
     }
 
     &.right {
-      right: -13px;
+      right: -5px;
       top: 50%;
       transform: translate(100%, -50%);
       &::before {
@@ -198,7 +254,7 @@ export default {
     }
 
     &.left {
-      left: -13px;
+      left: -5px;
       top: 50%;
       transform: translate(-100%, -50%);
       &::before {

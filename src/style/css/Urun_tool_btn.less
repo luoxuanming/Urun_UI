@@ -1,0 +1,227 @@
+@import "./Urun_base.less";
+
+.Urun-tool-btn {
+  display: inline-block;
+  vertical-align: middle;
+  a {
+    text-decoration: none;
+    padding: 3px 9px;
+    box-sizing: border-box;
+    font-size: 12px;
+    color: @default-color;
+    border: 1px solid @i-weak-color;
+    margin: 0 5px;
+    border-radius: 2px;
+    &.primary {
+      color: @basic-color;
+      border-color: @basic-color;
+      &:visited,
+      &:hover,
+      &:active {
+        &:extend(.primary);
+      }
+      &.inverse{
+        background: @basic-color;
+        color: #ffffff;
+        &:hover{
+          color: #ffffff;
+        }
+      }
+    }
+    &.info {
+      color: @msg-color;
+      border-color: @msg-color;
+      &:visited,
+      &:hover,
+      &:active {
+        &:extend(.info);
+      }
+      &.inverse{
+        background: @msg-color;
+        color: #ffffff;
+        &:hover{
+          color: #ffffff;
+        }
+      }
+    }
+    &.success {
+      color: @success-color;
+      border-color: @success-color;
+      &:visited,
+      &:hover,
+      &:active {
+        &:extend(.success);
+      }
+      &.inverse{
+        background: @success-color;
+        color: #ffffff;
+        &:hover{
+          color: #ffffff;
+        }
+      }
+    }
+    &.warning {
+      color: @warn-color;
+      border-color: @warn-color;
+      &:visited,
+      &:hover,
+      &:active {
+        &:extend(.warning);
+      }
+      &.inverse{
+        background: @warn-color;
+        color: #ffffff;
+        &:hover{
+          color: #ffffff;
+        }
+      }
+    }
+    &.secondary {
+      color: @negative-color;
+      border-color: @negative-color;
+      &:visited,
+      &:hover,
+      &:active {
+        &:extend(.secondary);
+      }
+      &.inverse{
+        background: @negative-color;
+        color: #ffffff;
+        &:hover{
+          color: #ffffff;
+        }
+      }
+    }
+    &.error {
+      color: @error-color;
+      border-color: @error-color;
+      &:visited,
+      &:hover,
+      &:active {
+        &:extend(.error);
+      }
+      &.inverse{
+        background: @error-color;
+        color: #ffffff;
+        &:hover{
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
+  &.compact {
+    a {
+      margin: 0;
+      border-color: #d4e1e9;
+      color: @default-color;
+      border-right-width: 0;
+      border-radius: 0;
+      &:last-of-type {
+        border-right-width: 1px;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+      &:first-of-type {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+      &:hover {
+        background: #e9f0f4;
+      }
+      &.primary {
+        background: @basic-color;
+        color: #ffffff;
+      }
+      &.success {
+        background: @success-color;
+        color: #ffffff;
+      }
+      &.secondary {
+        background: @negative-color;
+        color: #ffffff;
+      }
+      &.error {
+        background: @error-color;
+        color: #ffffff;
+      }
+      &.warning {
+        background: @warn-color;
+        color: #ffffff;
+      }
+      &.info {
+        background: @msg-color;
+        color: #ffffff;
+      }
+    }
+  
+  }
+
+  &.primary {
+    a{
+      border-color: @basic-color;
+      color: @basic-color;
+      &:visited,&:hover,&:active{
+        &:extend(a);
+      }
+    }
+  }
+  &.success {
+    a{
+      border-color: @success-color;
+      color: @success-color;
+      &:visited,&:hover,&:active{
+        &:extend(a);
+      }
+    }
+  }
+  &.warning {
+    a{
+      border-color: @warn-color;
+      color: @warn-color;
+      &:visited,&:hover,&:active{
+        &:extend(a);
+      }
+    }
+  }
+  &.secondary {
+    a{
+      border-color: @negative-color;
+      color: @negative-color;
+      &:visited,&:hover,&:active{
+        &:extend(a);
+      }
+    }
+  }
+  &.info {
+    a{
+      border-color: @msg-color;
+      color: @msg-color;
+      &:visited,&:hover,&:active{
+        &:extend(a);
+      }
+    }
+  }
+
+  &.error {
+    a{
+      border-color: @error-color;
+      color: @error-color;
+      &:visited,&:hover,&:active{
+        &:extend(a);
+      }
+    }
+  }
+  &.split{
+    a{
+      border-width:0;
+      border-right-width: 1px;
+      padding: 0;
+      padding-right: 9px;
+      border-color: @default-color;
+      &:last-of-type{
+        border-right-width: 0;
+      }
+    }
+  }
+}

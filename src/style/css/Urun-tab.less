@@ -1,0 +1,40 @@
+@import "./Urun_base.less";
+[v-cloak]{
+  display: none !important;
+}
+.Urun-tab {
+  display: inline-block;
+  background: @module-color;
+  margin:0;
+  padding:11px 10px;
+  max-height: 44px;
+  box-sizing: border-box;
+  li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 26px;
+    a {
+      text-decoration: none;
+      font-size: 14px;
+      color: @default-color;
+      padding: 13px 7px;
+      box-sizing: border-box;
+      border-bottom: 2px solid transparent;
+    }
+    &.active {
+      a {
+        color: @basic-color;
+        border-color: @basic-color;
+      }
+    }
+    &:last-child{
+      margin-right: 0;
+    }
+  }
+  &.style1{
+    border-bottom: 2px solid @border-weak-color;
+  }
+  &.style2{
+    border-top: 2px solid @basic-color;
+  }
+}

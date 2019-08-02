@@ -1,0 +1,117 @@
+@import "./Urun_base.less";
+.Urun-tooltip {
+  position: relative;
+  display: inline-block;
+  font-size: 14px;
+  color: @default-color;
+  padding: 8px;
+  .text{
+    display: inline-block;
+    vertical-align: middle;
+  }
+  i{
+    vertical-align: middle;
+    font-size: 18px;
+  }
+  .tip {
+    position: absolute;
+    box-shadow: @box-shadow;
+    background: @module-color;
+    border-radius: 2px;
+    padding: 10px;
+    text-align: left;
+    &::before {
+      position: absolute;
+      content: "";
+      border-style: solid;
+    }
+    &::after {
+      position: absolute;
+      content: "";
+      border-style: solid;
+    }
+    &.bottom {
+      bottom: -5px;
+      left: 50%;
+      transform: translate(-50%, 100%);
+      &::before {
+        top: -8px;
+        border-width: 0 7px 7px 7px;
+        border-color: transparent transparent @border-weak-color transparent;
+      }
+      &::after {
+        top: -7px;
+        border-width: 0 7px 7px 7px;
+        border-color: transparent transparent #ffffff transparent;
+      }
+      &::before,
+      &::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    &.top {
+      top: -5px;
+      left: 50%;
+      transform: translate(-50%, -100%);
+      &::before {
+        bottom: -8px;
+        border-width: 7px 7px 0 7px;
+        border-color: @border-weak-color transparent transparent transparent;
+      }
+      &::after {
+        border-width: 7px 7px 0 7px;
+        border-color: #ffffff transparent transparent transparent;
+        bottom: -7px;
+      }
+      &::before,
+      &::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    &.right {
+      right: -5px;
+      top: 50%;
+      transform: translate(100%, -50%);
+      &::before {
+        left: -8px;
+        border-width: 7px 7px 7px 0;
+        border-color: transparent @border-weak-color transparent transparent;
+      }
+      &::after {
+        border-width: 7px 7px 7px 0;
+        border-color: transparent #ffffff transparent transparent;
+        left: -7px;
+      }
+      &::before,
+      &::after {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    &.left {
+      left: -5px;
+      top: 50%;
+      transform: translate(-100%, -50%);
+      &::before {
+        right: -8px;
+        border-width: 7px 0 7px 7px;
+        border-color: transparent transparent transparent @border-weak-color;
+      }
+      &::after {
+        border-width: 7px 0 7px 7px;
+        border-color: transparent transparent transparent #ffffff;
+        right: -7px;
+      }
+      &::before,
+      &::after {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+  }
+}

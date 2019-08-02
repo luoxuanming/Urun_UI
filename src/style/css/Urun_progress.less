@@ -1,0 +1,55 @@
+@import "./Urun_base.less";
+[v-cloak]{
+  display: none !important;
+}
+.Urun-progress {
+  display: inline-block;
+  .progress {
+    display: inline-block;
+    height: 4px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    background: @border-weak-color;
+    position: relative;
+    vertical-align: middle;
+    .progress-bar {
+      display: inline-block;
+      background: @basic-color;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      border-radius: 2px;
+      transition: all 0.2s;
+      &.info {
+        background: @msg-color;
+      }
+      &.success {
+        background: @success-color;
+      }
+      &.error {
+        background: @error-color;
+      }
+      &.warning {
+        background: @warn-color;
+      }
+      &.secondary {
+        background: @negative-color;
+      }
+    }
+
+    &.small {
+      height: 2px;
+      border-radius: 1px;
+      .progress-bar {
+        border-radius: 1px;
+      }
+    }
+  }
+  .text {
+    display: inline-block;
+    font-size: 12px;
+    color: @default-color;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+}

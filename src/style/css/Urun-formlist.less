@@ -1,0 +1,149 @@
+@import "./Urun_base.less";
+[v-cloak]{display: none !important;}
+.Urun-formlist {
+  .list {
+    display: inline-block;
+    text-align: left;
+    color: @i-weak-color;
+    margin-right: 68px;
+    vertical-align: top;
+    background:#ffffff;
+    span.title {
+      font-size: 12px;
+      .checked{
+        color: @error-color;
+      }
+    }
+    .content {
+      min-width: 200px;
+      height: 28px;
+      position: relative;
+      border-bottom: 1px solid @border-weak-color;
+      input {
+        border: none;
+        outline: none;
+        margin: 4px 0;
+        font-size: 14px;
+        color: @darken-color;
+        &::placeholder {
+          font-size: 14px;
+          color: @i-weak-color;
+        }
+      }
+      .form-time{
+        font-size: 14px;
+        input{
+          width: 134px;
+        }
+        &.hour{
+          input{
+            width: 96px;
+          }
+        }
+        &.date{
+          input{
+            width: 76px;
+          }
+        }
+        &.igs{
+          input{
+            width: 114px;
+          }
+        }
+      }
+      .dropdown-wrapper{
+        height: 28px;
+        line-height: 28px;
+        font-size: 14px;
+        color: @darken-color;
+        position: relative;
+        cursor: pointer;
+        .noselect{
+          color:@i-weak-color;
+        }
+        .ul-dropdown-menu{
+          margin: 0;
+          padding:0;
+          width: 100%;
+          position: absolute;
+          left: 0;
+          top: 102%;
+          z-index: 30;
+          box-shadow:0px 1px 2px rgba(0,0,0,0.16);
+          box-sizing: border-box;
+          li{
+            width: 100%;
+            list-style: none;
+             min-height: 24px;
+             line-height: 24px;
+             background: @module-color;
+             a{
+                color: @default-color;
+                display: block;
+                padding:0 20px;
+                box-sizing: border-box;
+                text-decoration: none;
+                &:hover{
+                  color: @default-color;
+                }
+             }
+             &:hover{
+               background: #E5EDF2;
+             }
+          }
+        }
+      }
+      .iconfont {
+        font-size: 16px;
+        &.iconLeft {
+          float: left;
+          margin-top: 5px;
+          margin-right: 5px;
+        }
+        &.iconRight {
+          font-size: 12px;
+          position: absolute;
+          right: 0;
+          top: 8px;
+          cursor: pointer;
+          z-index: 20;
+          &:hover{
+            color: @basic-color;
+          }
+        }
+      }
+      &:hover {
+        border-color: @basic-color;
+        .iconxialajiantou{
+          color:@basic-color;
+        }
+      }
+    }
+    .msg {
+      display: block;
+      text-align: right;
+      i{
+        color: @i-weak-color;
+        font-style: normal;
+        font-size: 12px;
+      }
+    }
+    &.error {
+      .content {
+        border-bottom-color: @error-color;
+        &:hover {
+          border-bottom-color: @error-color;
+        }
+      }
+      .msg {
+        text-align: left;
+        i{
+          color: @error-color;
+        }
+      }
+    }
+    &:last-child{
+      margin-right: 0;
+    }
+  }
+}
